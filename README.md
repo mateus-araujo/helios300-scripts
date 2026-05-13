@@ -25,8 +25,23 @@ helios300-scripts/
 
 ## Uso
 
+### 1. Liberar execução de scripts (primeira vez apenas)
+
+O PowerShell bloqueia scripts por padrão. Execute como **Administrador**:
+
 ```powershell
-# Alternar modos:
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+```
+
+Ou, se preferir liberar só pra sessão atual (precisa repetir toda vez):
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+### 2. Alternar modos
+
+```powershell
 .\toggle-mode.ps1 -Mode gaming   # Performance com temperatura controlada
 .\toggle-mode.ps1 -Mode silent   # Silencioso para escritório
 .\toggle-mode.ps1 -Mode auto     # Volta ao padrão de fábrica
