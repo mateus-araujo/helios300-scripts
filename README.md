@@ -18,7 +18,7 @@ helios300-scripts/
 ├── install-paths.ps1        # Configuração de caminhos
 ├── profiles/
 │   ├── throttlestop/        # Perfis de CPU (gaming.ini, silent.ini)
-│   ├── fancontrol/          # Perfis de fan (gaming.xml, silent.xml)
+│   ├── fancontrol/          # Perfis de fan (gaming.json, silent.json)
 │   └── afterburner/         # Instruções GPU
 └── README.md
 ```
@@ -71,9 +71,10 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 1. Configure o Throttlestop manualmente uma vez para gerar o Throttlestop.ini
 2. Configure os perfis do MSI Afterburner (veja profiles/afterburner/README.md)
 3. **Configure o FanControl:**
-   - Abra o FanControl, arraste as curvas no gráfico
-   - File → Save Profile → salve como `gaming.xml` em `profiles/fancontrol/`
-   - Faça o mesmo pro perfil `silent.xml`
+   - Abra o FanControl, arraste as curvas no gráfico, configure os controles
+   - Execute `.\toggle-mode.ps1 -RegisterProfile gaming` para salvar a config como perfil Gaming
+   - Depois ajuste as curvas para o modo silencioso e execute `.\toggle-mode.ps1 -RegisterProfile silent`
+   - Ou use as opções 4 e 5 no menu interativo do script
 4. Edite `install-paths.ps1` com os caminhos corretos
 5. Execute `toggle-mode.ps1`
 

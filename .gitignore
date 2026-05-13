@@ -10,3 +10,6 @@ Desktop.ini
 
 # PowerShell
 profiles/throttlestop/Throttlestop.ini
+
+# Logs
+log.txt

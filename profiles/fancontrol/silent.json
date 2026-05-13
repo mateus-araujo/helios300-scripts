@@ -1,0 +1,72 @@
+{
+  "__VERSION__": "267",
+  "FanControl": {
+    "Controls": [],
+    "CustomSensors": [],
+    "FanCurves": [
+      {
+        "Name": "Silent",
+        "IsHidden": false,
+        "CommandMode": 0,
+        "SelectedTempSource": {
+          "Identifier": "/intelcpu/0/temperature/0"
+        },
+        "Points": [
+          "40,15",
+          "55,25",
+          "70,40",
+          "80,55",
+          "90,70"
+        ],
+        "MaximumTemperature": 100,
+        "MinimumTemperature": 20,
+        "MaximumCommand": 100,
+        "HysteresisConfig": {
+          "ResponseTimeUp": 2,
+          "ResponseTimeDown": 4,
+          "HysteresisValueUp": 3,
+          "HysteresisValueDown": 3,
+          "IgnoreHysteresisAtLimits": true
+        }
+      }
+    ],
+    "FanSensors": [],
+    "TemperatureSensors": []
+  },
+  "Sensors": {
+    "AdlxWrapperSettings": { "Enabled": true },
+    "DisabledPlugins": [],
+    "DisableStorageSensors": true,
+    "LibreHardwareMonitorSettings": {
+      "Controller": true,
+      "CPU": true,
+      "EmbeddedEC": true,
+      "GPU": true,
+      "Memory": true,
+      "Motherboard": true,
+      "PowerMonitor": false,
+      "PSU": false,
+      "Storage": false,
+      "StorageUpdateInterval": "00:01:00",
+      "ZeroRPMOverride": true
+    },
+    "NvAPIWrapperSettings": {
+      "Enabled": false,
+      "ZeroRPMOverride": false
+    }
+  },
+  "MainWindow": {
+    "Fahrenheit": false,
+    "HideCalibration": false,
+    "HideFanSpeedCards": true,
+    "HorizontalUIOrientation": false,
+    "PrimaryColor": "#FF2196F3",
+    "SecondaryColor": "#FFAEEA00",
+    "SelectedTheme": "",
+    "ShowHiddenCards": false,
+    "SyncThemeWithWindows": true,
+    "SyncTrayIconColorWithWindows": true,
+    "TrayIconColor": null,
+    "TrayIcons": []
+  }
+}
