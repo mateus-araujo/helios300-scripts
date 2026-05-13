@@ -1,0 +1,40 @@
+{
+  "ControllerType": "Acer",
+  "WriteRegister": 0,
+  "FanControls": [
+    {
+      "Name": "CPU Fan",
+      "ReadRegister": 148,
+      "WriteRegister": 147,
+      "MinSpeedValue": 0,
+      "MaxSpeedValue": 100,
+      "Curve": [
+        { "Temperature": 45, "Speed": 0 },
+        { "Temperature": 55, "Speed": 15 },
+        { "Temperature": 60, "Speed": 25 },
+        { "Temperature": 65, "Speed": 35 },
+        { "Temperature": 70, "Speed": 50 },
+        { "Temperature": 75, "Speed": 65 },
+        { "Temperature": 80, "Speed": 80 },
+        { "Temperature": 85, "Speed": 100 }
+      ]
+    },
+    {
+      "Name": "GPU Fan",
+      "ReadRegister": 150,
+      "WriteRegister": 149,
+      "MinSpeedValue": 0,
+      "MaxSpeedValue": 100,
+      "Curve": [
+        { "Temperature": 45, "Speed": 0 },
+        { "Temperature": 55, "Speed": 15 },
+        { "Temperature": 60, "Speed": 20 },
+        { "Temperature": 65, "Speed": 30 },
+        { "Temperature": 70, "Speed": 45 },
+        { "Temperature": 75, "Speed": 60 },
+        { "Temperature": 80, "Speed": 75 },
+        { "Temperature": 85, "Speed": 100 }
+      ]
+    }
+  ]
+}
