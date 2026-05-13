@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Alterna entre modos Gaming, Silent e Auto no Helios 300.
 .PARAMETER Mode

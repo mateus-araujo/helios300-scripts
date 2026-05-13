@@ -1,0 +1,6 @@
+# Normalizar line endings pra Windows (CRLF) no checkout
+* text=auto eol=crlf
+
+# Arquivos binários
+*.jpg binary
+*.png binary

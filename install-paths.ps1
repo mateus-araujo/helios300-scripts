@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Configura os caminhos dos programas no seu PC.
   Edite este arquivo com os caminhos corretos antes de executar.
