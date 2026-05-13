@@ -5,6 +5,6 @@
 #>
 
 $config.ThrottlestopPath = "$env:LOCALAPPDATA\Throttlestop"
-$config.ThrottlestopExe  = "${env:ProgramFiles}\Throttlestop\Throttlestop.exe"
+$config.ThrottlestopExe  = "C:\Throttlestop\Throttlestop.exe"
 $config.AfterburnerExe   = "${env:ProgramFiles(x86)}\MSI Afterburner\MSIAfterburner.exe"
-$config.NBFCConfigPath   = "C:\Program Files\NBFC\config.json"
+$config.NBFCConfigPath   = "${env:ProgramFiles(x86)}\NoteBook FanControl\config.json"

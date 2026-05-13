@@ -15,9 +15,9 @@ param(
 # ─── Caminhos padrão ───
 $config = @{
     ThrottlestopPath = "$env:LOCALAPPDATA\Throttlestop"
-    ThrottlestopExe  = "${env:ProgramFiles}\Throttlestop\Throttlestop.exe"
+    ThrottlestopExe  = "C:\Throttlestop\Throttlestop.exe"
     AfterburnerExe   = "${env:ProgramFiles(x86)}\MSI Afterburner\MSIAfterburner.exe"
-    NBFCConfigPath   = "C:\Program Files\NBFC\config.json"
+    NBFCConfigPath   = "${env:ProgramFiles(x86)}\NoteBook FanControl\config.json"
     ProfileDir       = "$PSScriptRoot\profiles"
 }
 
