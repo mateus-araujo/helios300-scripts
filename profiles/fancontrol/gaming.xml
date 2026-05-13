@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Perfil Gaming — FanControl (Rem0o)
+
+  COMO CRIAR:
+  1. Abra o FanControl
+  2. Configure as curvas de CPU e GPU arrastando os pontos no gráfico
+  3. File → Save Profile → salve como "gaming"
+  4. Substitua este arquivo pelo XML gerado
+
+  Configuração sugerida:
+  - Fan CPU: 30% @ 50°C → 60% @ 65°C → 100% @ 80°C
+  - Fan GPU: 25% @ 50°C → 50% @ 65°C → 100% @ 80°C
+  - Sensor misto: maior temperatura entre CPU e GPU
+-->
+<FanControlProfile>
+  <Name>Gaming</Name>
+  <Description>Curvas agressivas para jogos</Description>
+</FanControlProfile>

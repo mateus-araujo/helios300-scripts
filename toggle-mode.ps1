@@ -17,7 +17,8 @@ $config = @{
     ThrottlestopPath = "$env:LOCALAPPDATA\Throttlestop"
     ThrottlestopExe  = "C:\Throttlestop\Throttlestop.exe"
     AfterburnerExe   = "${env:ProgramFiles(x86)}\MSI Afterburner\MSIAfterburner.exe"
-    NBFCConfigPath   = "${env:ProgramFiles(x86)}\NoteBook FanControl\config.json"
+    FanControlPath   = "$env:LOCALAPPDATA\FanControl"
+    FanControlExe    = "C:\FanControl\FanControl.exe"
     ProfileDir       = "$PSScriptRoot\profiles"
 }
 
@@ -58,17 +59,23 @@ function Set-AfterburnerProfile {
     }
 }
 
-function Set-NBFCFanProfile {
+function Set-FanControlProfile {
     param([string]$ProfileName)
-    $src = "$($config.ProfileDir)\nbfc\$ProfileName.json"
-    $dst = $config.NBFCConfigPath
+    $src = "$($config.ProfileDir)\fancontrol\$ProfileName.xml"
+    $dst = "$($config.FanControlPath)\Configurations.xml"
     if (Test-Path $src) {
+        # Garante que o diretório de config existe
+        $null = New-Item -ItemType Directory -Path $config.FanControlPath -Force
         Copy-Item $src $dst -Force
-        Restart-Service nbfc -ErrorAction SilentlyContinue
-        if ($?) {
-            Write-Host "  ✓ Fans (NBFC): $ProfileName" -ForegroundColor Green
+        # Reinicia FanControl pra aplicar
+        Stop-Process -Name "FanControl" -Force -ErrorAction SilentlyContinue
+        if (Test-Path $config.FanControlExe) {
+            Start-Process $config.FanControlExe
+            Write-Host "  ✓ Fans (FanControl): $ProfileName" -ForegroundColor Green
         } else {
-            Write-Host "  ! NBFC service not available" -ForegroundColor Yellow
+            Write-Host "  ✓ Fan config copied: $ProfileName" -ForegroundColor Green
+            Write-Host "  ! FanControl not found at $($config.FanControlExe)" -ForegroundColor Yellow
+            Write-Host "    Start it manually to apply the profile." -ForegroundColor Yellow
         }
     } else {
         Write-Host "  ✗ Fan profile not found: $src" -ForegroundColor Red
@@ -111,7 +118,7 @@ switch ($Mode) {
         Start-Sleep -Seconds 2
         Set-AfterburnerProfile "2"
         Start-Sleep -Seconds 1
-        Set-NBFCFanProfile "gaming"
+        Set-FanControlProfile "gaming"
         Write-Host "`n✅ Done! Expect 70-80°C in games (was 90-95°C)`n" -ForegroundColor Green
     }
     "silent" {
@@ -120,7 +127,7 @@ switch ($Mode) {
         Start-Sleep -Seconds 2
         Set-AfterburnerProfile "3"
         Start-Sleep -Seconds 1
-        Set-NBFCFanProfile "silent"
+        Set-FanControlProfile "silent"
         Write-Host "`n✅ Silent mode active. Fans near-inaudible.`n" -ForegroundColor Green
     }
     "auto" {
@@ -128,9 +135,8 @@ switch ($Mode) {
         Stop-Process -Name "Throttlestop" -Force -ErrorAction SilentlyContinue
         Write-Host "  ✓ Throttlestop stopped" -ForegroundColor Green
         Set-AfterburnerProfile "1"
-        Stop-Service nbfc -ErrorAction SilentlyContinue
-        Set-Service nbfc -StartupType Disabled -ErrorAction SilentlyContinue
-        Write-Host "  ✓ NBFC stopped (PredatorSense controls fans)" -ForegroundColor Green
+        Stop-Process -Name "FanControl" -Force -ErrorAction SilentlyContinue
+        Write-Host "  ✓ FanControl stopped (PredatorSense controls fans)" -ForegroundColor Green
         Write-Host "`n✅ All back to factory defaults.`n" -ForegroundColor Green
     }
 }

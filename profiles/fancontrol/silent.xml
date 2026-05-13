@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Perfil Silent — FanControl (Rem0o)
+
+  COMO CRIAR:
+  1. Abra o FanControl
+  2. Configure as curvas de CPU e GPU arrastando os pontos no gráfico
+  3. File → Save Profile → salve como "silent"
+  4. Substitua este arquivo pelo XML gerado
+
+  Configuração sugerida:
+  - Fan CPU: 0% @ 45°C → 20% @ 60°C → 50% @ 75°C → 100% @ 85°C
+  - Fan GPU: 0% @ 45°C → 15% @ 60°C → 40% @ 75°C → 100% @ 85°C
+  - Sensor misto: maior temperatura entre CPU e GPU
+-->
+<FanControlProfile>
+  <Name>Silent</Name>
+  <Description>Curvas silenciosas para escritório</Description>
+</FanControlProfile>

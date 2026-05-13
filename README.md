@@ -8,7 +8,7 @@ Scripts para gerenciar performance térmica do Acer Predator Helios 300 (i7-1180
 |----------|----------|--------|
 | Throttlestop 9.6+ | TechPowerUp | Undervolt + Power Limits CPU |
 | MSI Afterburner | MSI Website | Undervolt GPU |
-| NoteBook FanControl | GitHub | Curva de fans customizada |
+| FanControl (Rem0o) | [GitHub](https://github.com/Rem0o/FanControl.Releases) | Curva de fans customizada |
 
 ## Estrutura
 
@@ -18,7 +18,7 @@ helios300-scripts/
 ├── install-paths.ps1        # Configuração de caminhos
 ├── profiles/
 │   ├── throttlestop/        # Perfis de CPU (gaming.ini, silent.ini)
-│   ├── nbfc/                # Curvas de fan (gaming.json, silent.json)
+│   ├── fancontrol/          # Perfis de fan (gaming.xml, silent.xml)
 │   └── afterburner/         # Instruções GPU
 └── README.md
 ```
@@ -55,9 +55,12 @@ helios300-scripts/
 
 1. Configure o Throttlestop manualmente uma vez para gerar o Throttlestop.ini
 2. Configure os perfis do MSI Afterburner (veja profiles/afterburner/README.md)
-3. Instale o NBFC e teste com os JSONs fornecidos
-4. Edite install-paths.ps1 com os caminhos corretos
-5. Execute toggle-mode.ps1
+3. **Configure o FanControl:**
+   - Abra o FanControl, arraste as curvas no gráfico
+   - File → Save Profile → salve como `gaming.xml` em `profiles/fancontrol/`
+   - Faça o mesmo pro perfil `silent.xml`
+4. Edite `install-paths.ps1` com os caminhos corretos
+5. Execute `toggle-mode.ps1`
 
 ## Temperaturas esperadas
 
