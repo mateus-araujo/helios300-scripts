@@ -6,9 +6,8 @@ Scripts para gerenciar performance térmica do Acer Predator Helios 300 (i7-1180
 
 | Programa | Download | Função |
 |----------|----------|--------|
-| Throttlestop 9.6+ | TechPowerUp | Undervolt + Power Limits CPU |
+| Throttlestop 9.7+ | TechPowerUp | Undervolt + Power Limits CPU |
 | MSI Afterburner | MSI Website | Undervolt GPU |
-| FanControl (Rem0o) | [GitHub](https://github.com/Rem0o/FanControl.Releases) | Curva de fans customizada |
 
 ## Estrutura
 
@@ -18,7 +17,6 @@ helios300-scripts/
 ├── install-paths.ps1        # Configuração de caminhos
 ├── profiles/
 │   ├── throttlestop/        # Perfis de CPU (gaming.ini, silent.ini)
-│   ├── fancontrol/          # Perfis de fan (gaming.json, silent.json)
 │   └── afterburner/         # Instruções GPU
 └── README.md
 ```
@@ -27,16 +25,10 @@ helios300-scripts/
 
 ### 1. Liberar execução de scripts (primeira vez apenas)
 
-O PowerShell bloqueia scripts por padrão. Execute como **Administrador**:
+Execute como **Administrador**:
 
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
-```
-
-Ou, se preferir liberar só pra sessão atual (precisa repetir toda vez):
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 
 ### 2. Alternar modos
@@ -46,7 +38,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\toggle-mode.ps1 -Mode silent   # Silencioso para escritório
 .\toggle-mode.ps1 -Mode auto     # Volta ao padrão de fábrica
 
-# OU use o menu interativo (só rodar sem parâmetros):
+# OU use o menu interativo:
 .\toggle-mode.ps1
 ```
 
@@ -54,29 +46,25 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ### Gaming Mode
 - Undervolt CPU: -100mV core, -90mV cache
-- PL1: 55W (vs 110W stock)
 - Speed Shift Max: 40 (4.0GHz boost)
-- Fans: curvas agressivas (100% @ 80°C)
-- GPU: perfil undervolt (775mV)
+- GPU: perfil undervolt (perfil 2)
 
 ### Silent Mode
 - Undervolt CPU: -80mV core, -70mV cache
-- PL1: 25W
 - Speed Shift Max: 28 (2.8GHz max)
-- Fans: curvas silenciosas
-- GPU: perfil undervolt (725mV)
+- GPU: perfil undervolt (perfil 3)
+
+### Auto Mode
+- ThrottleStop desligado (voltagens stock)
+- Afterburner perfil 1 (stock)
+- Fans voltam ao controle da PredatorSense
 
 ## Setup inicial
 
 1. Configure o Throttlestop manualmente uma vez para gerar o Throttlestop.ini
 2. Configure os perfis do MSI Afterburner (veja profiles/afterburner/README.md)
-3. **Configure o FanControl:**
-   - Abra o FanControl, arraste as curvas no gráfico, configure os controles
-   - Execute `.\toggle-mode.ps1 -RegisterProfile gaming` para salvar a config como perfil Gaming
-   - Depois ajuste as curvas para o modo silencioso e execute `.\toggle-mode.ps1 -RegisterProfile silent`
-   - Ou use as opções 4 e 5 no menu interativo do script
-4. Edite `install-paths.ps1` com os caminhos corretos
-5. Execute `toggle-mode.ps1`
+3. Edite `install-paths.ps1` com os caminhos corretos
+4. Execute `toggle-mode.ps1`
 
 ## Temperaturas esperadas
 
