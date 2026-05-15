@@ -1,15 +1,1 @@
-# Windows
-Thumbs.db
-*.log
-*.suo
-*.user
-Desktop.ini
-
-# macOS
-.DS_Store
-
-# PowerShell
-profiles/throttlestop/Throttlestop.ini
-
-# Logs
-log.txt
+tools/

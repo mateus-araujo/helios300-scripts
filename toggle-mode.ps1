@@ -27,30 +27,23 @@ if (Test-Path $customCfg) { . $customCfg }
 # ─── Tabela de perfis TS 9.7 ───
 $tsProfiles = @{
     gaming = @{
-        Profile   = 0
-        EnPerfPref = 84
-        DutyCycle  = 40
-        CoreMV     = -100
-        CacheMV    = -90
-        Payload    = "0x1700"
+        Profile        = 0
+        EnPerfPref     = 84
+        DutyCycle      = 35
+        Payload        = "0x1700"
+        SpeedShiftMax  = 26
+        SpeedShiftMin  = 1
+        ProchotOffset  = 20
     }
     silent = @{
-        Profile   = 1
-        EnPerfPref = 128
-        DutyCycle  = 28
-        CoreMV     = -80
-        CacheMV    = -70
-        Payload    = "0x1700"
+        Profile        = 1
+        EnPerfPref     = 128
+        DutyCycle      = 28
+        Payload        = "0x1700"
+        SpeedShiftMax  = 20
+        SpeedShiftMin  = 1
+        ProchotOffset  = 25
     }
-}
-
-# ─── Codifica offset mV para FIVR hex (TS 9.7) ───
-function ConvertTo-FIVRHex {
-    param([int]$Millivolts)
-    $dec = [int][Math]::Round($Millivolts * 32)
-    if ($dec -ge 0) { return "0x{0:X8}" -f $dec }
-    $twos = 0x10000 + $dec
-    return "0x{0:X4}0000" -f $twos
 }
 
 # ─── Funções ───
@@ -69,9 +62,6 @@ function Set-ThrottlestopProfile {
     }
 
     $content = Get-Content $ini -Raw
-    $coreHex = ConvertTo-FIVRHex -Millivolts $profile.CoreMV
-    $cacheHex = ConvertTo-FIVRHex -Millivolts $profile.CacheMV
-
     $lines = $content -split "`r?`n"
     $newLines = @()
     $inThrottleStop = $false
@@ -84,11 +74,13 @@ function Set-ThrottlestopProfile {
             if ($line -match '^Profile=') { $line = "Profile=$($profile.Profile)" }
             elseif ($line -match '^EnPerfPref0=') { $line = "EnPerfPref0=$($profile.EnPerfPref)" }
             elseif ($line -match '^DutyCycle1=') { $line = "DutyCycle1=$($profile.DutyCycle)" }
-            elseif ($line -match '^FIVRVoltage00=') { $line = "FIVRVoltage00=$coreHex" }
-            elseif ($line -match '^FIVRVoltage20=') { $line = "FIVRVoltage20=$cacheHex" }
-            elseif ($line -match '^UnlockVoltage00=') { $line = "UnlockVoltage00=1" }
-            elseif ($line -match '^UnlockVoltage20=') { $line = "UnlockVoltage20=1" }
             elseif ($line -match '^Payload1=') { $line = "Payload1=$($profile.Payload)" }
+            elseif ($line -match "^SpeedShiftMaxMin$($profile.Profile)=") {
+                $line = "SpeedShiftMaxMin$($profile.Profile)=0x{0:X2}{1:X2}" -f $profile.SpeedShiftMax, $profile.SpeedShiftMin
+            }
+            elseif ($line -match "^PROCHOT_Offset$($profile.Profile)=") {
+                $line = "PROCHOT_Offset$($profile.Profile)=0x{0:X}" -f $profile.ProchotOffset
+            }
         }
         $newLines += $line
     }
@@ -97,12 +89,17 @@ function Set-ThrottlestopProfile {
     $newContent = $newContent -replace '(?<=^ProfileName1=).*', 'Gaming'
     $newContent = $newContent -replace '(?<=^ProfileName2=).*', 'Silent'
 
+    $newContent = [regex]::Replace($newContent, '(?m)(?<=^Options1=)0x[0-9A-Fa-f]+', {
+        param($m)
+        "0x{0:X8}" -f ([int]$m.Value -bor 0x400000)
+    })
+
     Set-Content $ini $newContent -NoNewline -Encoding Default
-    Write-Host "  ✓ ThrottleStop: $ProfileName (Core $($profile.CoreMV)mV, Cache $($profile.CacheMV)mV)" -ForegroundColor Green
+    Write-Host "  ✓ ThrottleStop: $ProfileName" -ForegroundColor Green
 
     Stop-Process -Name "Throttlestop" -Force -ErrorAction SilentlyContinue
     if (Test-Path $config.ThrottlestopExe) {
-        Start-Process $config.ThrottlestopExe
+        Start-Process $config.ThrottlestopExe -ArgumentList "/Log"
     }
 }
 
@@ -156,21 +153,21 @@ switch ($Mode) {
         Set-ThrottlestopProfile "gaming"
         Start-Sleep -Seconds 2
         Set-AfterburnerProfile "2"
-        Write-Host "`nDone! Expect 70-80C in games (was 90-95C)`n" -ForegroundColor Green
+        Write-Host "`nDone! PROCHOT offset caps temp at ~80°C" -ForegroundColor Green
+        Write-Host "  SpeedShift max 26 · DutyCycle 35`n" -ForegroundColor Green
     }
     "silent" {
         Write-Host "`nSilent Mode:`n" -ForegroundColor Blue
         Set-ThrottlestopProfile "silent"
         Start-Sleep -Seconds 2
         Set-AfterburnerProfile "3"
-        Write-Host "`nSilent mode active. Fans near-inaudible.`n" -ForegroundColor Green
+        Write-Host "`nSilent mode active.`n" -ForegroundColor Green
     }
     "auto" {
         Write-Host "`nAuto Mode (factory defaults):`n" -ForegroundColor Yellow
         Stop-Process -Name "Throttlestop" -Force -ErrorAction SilentlyContinue
         Write-Host "  Throttlestop stopped" -ForegroundColor Green
         Set-AfterburnerProfile "1"
-        Write-Host "  PredatorSense controls fans" -ForegroundColor Green
         Write-Host "`nAll back to factory defaults.`n" -ForegroundColor Green
     }
 }
